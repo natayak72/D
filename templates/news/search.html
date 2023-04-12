@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load custom_filters %}
+
+{% block title %} Поиск {% endblock title %}
+
+{% block content %}
+    <form method="GET">
+     {{ filter.form }}
+        <input type="submit" value="Поиск">
+    </form>
+
+
+    <table>
+        <thead>
+            <th>
+                Написано после
+            </th>
+            <th>
+                Заголовок
+            </th>
+            <th>
+                Автор
+            </th>
+        </thead>
+
+        {% for post in filter.qs %}
+        <tr>
+            <td>{{ post.create_datetime }}</td>
+            <td>{{ post.header|censor }}</td>
+            <td>{{ post.author }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock content %}

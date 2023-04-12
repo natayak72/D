@@ -1,0 +1,19 @@
+<div>
+    {% if request.user.is_authenticated %}
+        <div>
+            <button> <a href="/accounts/logout">Выйти</a> </button>
+{#            <button> <a href="{% url 'logout' %}">Выйти</a> </button>#}
+{#            <button> <a href="#">Выйти</a> </button>#}
+
+        {% if is_not_author %}
+            <button> <a href="{% url 'become_author' %}">Стать автором!</a> </button>
+        {% endif %}
+        </div>
+    {% else %}
+        <div>
+            <button> <a href="/accounts/login">Войти</a> </button>
+{#            <button> <a href="{% url 'login' %}">Войти</a> </button>#}
+{#            <button> <a href="#">Войти</a> </button>#}
+        </div>
+    {% endif %}
+</div>

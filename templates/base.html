@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{% block head_title %}{% endblock head_title %}</title>
+    </head>
+    <body>
+        {% block body %}
+            <h1 class="navbar-brand">Задания блока D</h1>
+            <h3>Пользователь {{request.user.username}}</h3>
+            {% include 'base/login_btns.html' %}
+            {% include 'base/nav.html' %}
+
+{#            --------------------------------------------------  content  #}
+            {% block content %}
+            {% endblock content %}
+{#            -------------------------------------------------- // content  #}
+        {% endblock body %}
+        {% block extra_body %}
+            <h4>Extra_body</h4>
+        {% endblock extra_body %}
+    </body>
+</html>
