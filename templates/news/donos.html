@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %} ГосДонос {% endblock title %}
+
+{% block content %}
+    <h4>Тут надо отправлять жалобы</h4>
+
+    <form action="{% url 'news_donos' %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <label for="client_name">Имя клиента</label>
+    <input name="client_name" type="text"><br>
+    <label for="message">Донос:</label>
+    <input name="message" type="text"><br>
+    <label for="date">Дата:</label>
+    <input name="date" type="date">.<br>
+    <input type="submit" value="Отправить!">
+    </form>
+{% endblock content %}

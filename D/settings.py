@@ -151,3 +151,12 @@ ACCOUNT_AUTHENTICATION_METHOD = 'username'
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 
 ACCOUNT_FORMS = {'signup': 'sign.forms.BasicSignupForm'}
+
+
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'yacyna.pavel'
+EMAIL_HOST_PASSWORD = 'wkwjkejbsqstnqsq'    # Имя пароля - sf
+EMAIL_USE_SSL = True
+
+

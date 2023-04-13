@@ -4,13 +4,26 @@
 {% block title %} Посты {% endblock title %}
 
 {% block content %}
-{#    {% if user.is_authenticated %}#}
         <div>
             <h1>Посты:</h1>
+
+        <form method="GET">
+            {{ filter.form }}
+            <input type="submit" value="Поиск">
+        </form>
+
+            Выбраны категории:
+            <ul>
+                {% for category in choosed %}
+                    <li>{{ category }}</li>
+                {% endfor %}
+            </ul>
+        <br>
             <ol>
-                {% for news in news_list %}
+                {% for news in filter.qs %}
+{#                {% for news in news_list %}#}
                     <li>
-                    <a href="{% url 'news_item' news.id %}"> {{ news.header|censor }} ({{ news.create_datetime }}) {{ news.preview|censor }} </a>
+                    <a href="{% url 'news_item' news.id %}"> {{ news.header|censor }} ({{ news.category.all }}) {{ news.preview|censor }} </a>
                     <a href="{% url 'news_update' news.id %}">Редактировать</a>
                     <a href="{% url 'news_delete' news.id %}">Удалить</a>
                     </li>
