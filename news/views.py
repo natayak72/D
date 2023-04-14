@@ -28,6 +28,10 @@ class NewsDonos(View):
         return redirect('news_donos')
 
 
+class CategorySubscribe(ListView):
+    # TODO template_name = 'news/subscribe_category.html'
+
+
 class NewsSearch(ListView):
     model = Post
     template_name = 'news/search.html'
@@ -43,6 +47,9 @@ class NewsDelete(LoginRequiredMixin, DeleteView):
     queryset = Post.objects.all()
     template_name = 'news/delete.html'
     success_url = '/news/'
+
+
+
 
 
 class NewsInstance(DetailView):

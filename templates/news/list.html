@@ -14,9 +14,13 @@
 
             <br><br>
                 {% if choosed %}
-                    Выбраны посты следующих категорий:
+                    Выбраны посты следующих категорий:<br>
 
-                    {% for category in choosed %} {{ category }} {% endfor %}
+                    {% for category in choosed %}
+                        {{ category }}
+                        <button><a href="{% url 'news_category_subscribe' category %}">Подписаться на эту категорию</a></button>
+                        <br>
+                    {% endfor %}
                 {% endif %}
             <br><br>
             <table>
