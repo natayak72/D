@@ -7,30 +7,44 @@
         <div>
             <h1>Посты:</h1>
 
-        <form method="GET">
-            {{ filter.form }}
-            <input type="submit" value="Поиск">
-        </form>
+            <form method="GET">
+                {{ filter.form }}
+                <input type="submit" value="Поиск">
+            </form>
 
-            Выбраны категории:
-            <ul>
-                {% for category in choosed %}
-                    <li>{{ category }}</li>
-                {% endfor %}
-            </ul>
-        <br>
-            <ol>
+            <br><br>
+                {% if choosed %}
+                    Выбраны посты следующих категорий:
+
+                    {% for category in choosed %} {{ category }} {% endfor %}
+                {% endif %}
+            <br><br>
+            <table>
+                <tr>
+                        <td>Статья</td>
+                        <td>Категории</td>
+                        <td>Действия</td>
+                </tr>
+
                 {% for news in filter.qs %}
-{#                {% for news in news_list %}#}
-                    <li>
-                    <a href="{% url 'news_item' news.id %}"> {{ news.header|censor }} ({{ news.category.all }}) {{ news.preview|censor }} </a>
-                    <a href="{% url 'news_update' news.id %}">Редактировать</a>
-                    <a href="{% url 'news_delete' news.id %}">Удалить</a>
-                    </li>
-                {% endfor %}
-            </ol>
+                    <tr>
+                            <td><a href="{% url 'news_item' news.id %}"><b>{{ news.header }}: </b> {{ news.preview }}}</a></td>
+                            <td>
+                                {% for category in news.category.all %}
+                                    {{ category }}
+                                {% endfor %}
+                            </td>
+                            <td>
+                                <a href="{% url 'news_update' news.id %}">Редактировать</a>
+                                <a href="{% url 'news_delete' news.id %}">Удалить</a>
+                            </td>
 
-            <a href="{% url 'news_create' %}">Создать пост</a>
+                    </tr>
+                {% endfor %}
+            </table>
+
+            <br><br>
+            <button type="button"><a href="{% url 'news_create' %}">Создать пост</a></button>
             <br><br>
 
             {% if is_paginated %}

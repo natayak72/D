@@ -69,15 +69,20 @@ class NewsList(ListView):
 
         filter = CategoryFilter(self.request.GET, queryset=self.get_queryset())
         context['filter'] = filter
-        # try:
-        #     filter_data = filter.data.getlist('category')
-        # except KeyError:
-        #     print('не выбраны категории!')
-        #     pass
-        categories = [Category.objects.get(id=int(category_id)) for category_id in filter.data.getlist('category')]
-        filter_qs = list(filter.qs)
-        first_post = filter_qs[0]
-        first_post_categories = list(first_post.category.all())
+        data = filter.data
+        x = 1
+        try:
+            filter_data = filter.data.getlist('category')
+        except AttributeError:
+            print('не выбраны категории!')
+            filter_data = []
+            pass
+
+        x = 1
+        try:
+            categories = [Category.objects.get(id=int(category_id)) for category_id in filter.data.getlist('category')]
+        except AttributeError:
+            categories = []
         context['choosed'] = categories
         x = 1
         return context
