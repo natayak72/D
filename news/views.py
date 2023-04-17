@@ -3,14 +3,17 @@ import datetime
 from django.views.generic import DeleteView, ListView, DetailView, UpdateView, View
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.shortcuts import render, redirect
-from django.core.mail import send_mail
+from django.core.mail import send_mail, EmailMultiAlternatives
+from django.template.loader import render_to_string
 
 from .models import Post, Category, User
 from .forms import PostCreateForm
 from .filters import NewsFilter, CategoryFilter
+
 # Create your views here.
 
 FROM_EMAIL = 'yacyna.pavel@yandex.ru'
+
 
 class NewsDonos(View):
     def get(self, request, *args, **kwargs):
@@ -29,7 +32,6 @@ class NewsDonos(View):
         return redirect('news_donos')
 
 
-
 class CategorySubscribe(DetailView):
     model = Category
     template_name = 'news/subscribe_category.html'
@@ -39,7 +41,6 @@ class CategorySubscribe(DetailView):
         x = 1
         context['subscribers'] = self.object.subscribers.all()
         return context
-
 
     def post(self, request, *args, **kwargs):
         x = 1
@@ -62,12 +63,10 @@ class NewsSearch(ListView):
         return context
 
 
-
 class NewsDelete(LoginRequiredMixin, DeleteView):
     queryset = Post.objects.all()
     template_name = 'news/delete.html'
     success_url = '/news/'
-
 
 
 class NewsInstance(DetailView):
@@ -140,7 +139,6 @@ class NewsCreate(PermissionRequiredMixin, ListView):
         new_post.save()
 
         return redirect('news_list')
-
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
