@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %} Подписаться на категорию {% endblock title %}
+
+{% block content %}
+
+    Подписчики: {{ subscribers }}
+
+    {% if user in subscribers %}
+        <div>
+            Вы уже подписаны на эту категорию!
+        </div>
+    {% else %}
+        <h2> Вы хотите подписаться на категорию {{ category }}? </h2>
+
+        <form method="POST">
+            {% csrf_token %}
+            <input type="submit" value="Да">
+        </form>
+    {% endif %}
+
+
+
+    <br>
+
+    <a href="{% url 'news_list' %}">К списку постов</a>
+{% endblock content %}
