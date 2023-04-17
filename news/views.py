@@ -10,6 +10,7 @@ from .forms import PostCreateForm
 from .filters import NewsFilter, CategoryFilter
 # Create your views here.
 
+FROM_EMAIL = 'yacyna.pavel@yandex.ru'
 
 class NewsDonos(View):
     def get(self, request, *args, **kwargs):
@@ -22,7 +23,7 @@ class NewsDonos(View):
 
         send_mail(subject=f'Уважаемый {donos_client_name}! Ваш донос от {donos_date}:',
                   message=donos_message,
-                  from_email='yacyna.pavel@yandex.ru',
+                  from_email=FROM_EMAIL,
                   recipient_list=['yacyna.pavel1@gmail.com'])
 
         return redirect('news_donos')
@@ -113,13 +114,32 @@ class NewsCreate(PermissionRequiredMixin, ListView):
     form_class = PostCreateForm
 
     # TODO после реализации подписки на категорию
-    # def post(self, request):
-    #     print('post!')
-        # 1. взять данные из поста
-        # 2. создать пост
-        # 3. взять всех подписчиков из каждой категории поста
-        # 4. отправить каждому сообщение на эл. почту
-        # return redirect('news_list')
+    def post(self, request):
+        author_id = request.POST.get('author')
+        categories = request.POST.getlist('category')
+        header = request.POST.get('header')
+        text = request.POST.get('text')
+        post_type = request.POST.get('type')
+        new_post = Post(author_id=author_id, header=header, text=text, type=post_type)
+        new_post.save()
+
+        for category_id in categories:
+            new_post.category.add(category_id)
+
+            subscribers = Category.objects.get(pk=category_id).subscribers.all()
+
+            recipients_list = []
+            for subscriber in subscribers:
+                recipients_list.append(subscriber.email)
+
+            send_mail(subject=f'Вышла новая статья из категории {category_id}!',
+                      message=new_post.preview(),
+                      from_email=FROM_EMAIL,
+                      recipient_list=recipients_list)
+
+        new_post.save()
+
+        return redirect('news_list')
 
 
     def get_context_data(self, **kwargs):
