@@ -5,7 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from django.shortcuts import render, redirect
 from django.core.mail import send_mail
 
-from .models import Post, Category
+from .models import Post, Category, User
 from .forms import PostCreateForm
 from .filters import NewsFilter, CategoryFilter
 # Create your views here.
@@ -28,8 +28,26 @@ class NewsDonos(View):
         return redirect('news_donos')
 
 
-class CategorySubscribe(ListView):
-    # TODO template_name = 'news/subscribe_category.html'
+
+class CategorySubscribe(DetailView):
+    model = Category
+    template_name = 'news/subscribe_category.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        x = 1
+        context['subscribers'] = self.object.subscribers.all()
+        return context
+
+
+    def post(self, request, *args, **kwargs):
+        x = 1
+        user = User.objects.get(pk=request.user.pk)
+        category = Category.objects.get(pk=kwargs.get("pk"))
+        print(f'Пользователем {user} осуществлена подписка на категорию {category}!')
+
+        category.subscribers.add(user)
+        return redirect('news_list')
 
 
 class NewsSearch(ListView):
@@ -43,12 +61,11 @@ class NewsSearch(ListView):
         return context
 
 
+
 class NewsDelete(LoginRequiredMixin, DeleteView):
     queryset = Post.objects.all()
     template_name = 'news/delete.html'
     success_url = '/news/'
-
-
 
 
 
@@ -69,23 +86,13 @@ class NewsList(ListView):
 
     def get_context_data(self, **kwargs):
 
-        print(f'get_context_data:')
         context = super().get_context_data(**kwargs)
 
         context['is_not_author'] = not self.request.user.groups.filter(name='authors').exists()
 
         filter = CategoryFilter(self.request.GET, queryset=self.get_queryset())
         context['filter'] = filter
-        data = filter.data
-        x = 1
-        try:
-            filter_data = filter.data.getlist('category')
-        except AttributeError:
-            print('не выбраны категории!')
-            filter_data = []
-            pass
 
-        x = 1
         try:
             categories = [Category.objects.get(id=int(category_id)) for category_id in filter.data.getlist('category')]
         except AttributeError:
