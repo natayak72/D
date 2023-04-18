@@ -1,18 +1,34 @@
 import datetime
 
+from django.contrib.auth.models import Group
+from django.contrib.auth.decorators import login_required
 from django.views.generic import DeleteView, ListView, DetailView, UpdateView, View
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.shortcuts import render, redirect
 from django.core.mail import send_mail, EmailMultiAlternatives
 from django.template.loader import render_to_string
 
-from .models import Post, Category, User
+import D.settings
+from .models import Post, Category, User, Author
 from .forms import PostCreateForm
 from .filters import NewsFilter, CategoryFilter
 
 # Create your views here.
 
-FROM_EMAIL = 'yacyna.pavel@yandex.ru'
+FROM_EMAIL = D.settings.DEFAULT_FROM_EMAIL
+
+
+@login_required
+def make_me_author(request):
+    user = request.user
+    authors_group = Group.objects.get(name='authors')
+    if not user.groups.filter(name='authors').exists():
+        authors_group.user_set.add(user)
+
+    Author.objects.create(authorUser_id=user.id)
+
+    return redirect('/news/')
+
 
 
 class NewsDonos(View):

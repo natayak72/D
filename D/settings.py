@@ -142,6 +142,8 @@ LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/news'
 LOGOUT_REDIRECT_URL = '/news'
 
+DEFAULT_FROM_EMAIL = 'yacyna.pavel@yandex.ru'
+
 SITE_ID = 1
 
 ACCOUNT_EMAIL_REQUIRED = True
@@ -150,7 +152,7 @@ ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'username'
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 
-ACCOUNT_FORMS = {'signup': 'sign.forms.BasicSignupForm'}
+# ACCOUNT_FORMS = {'signup': 'sign.forms.BasicSignupForm'}
 
 
 EMAIL_HOST = 'smtp.yandex.ru'

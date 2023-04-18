@@ -22,13 +22,3 @@ class BaseRegisterView(CreateView):
     success_url = '/news'
 
 
-@login_required
-def make_me_author(request):
-    user = request.user
-    authors_group = Group.objects.get(name='authors')
-    if not user.groups.filter(name='authors').exists():
-        authors_group.user_set.add(user)
-
-    Author.objects.create(authorUser_id=user.id)
-
-    return redirect('/news/')
