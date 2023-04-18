@@ -112,7 +112,6 @@ class NewsCreate(PermissionRequiredMixin, ListView):
     template_name = 'news/create.html'
     form_class = PostCreateForm
 
-    # TODO после реализации подписки на категорию
     def post(self, request):
         author_id = request.POST.get('author')
         categories = request.POST.getlist('category')
@@ -131,10 +130,27 @@ class NewsCreate(PermissionRequiredMixin, ListView):
             for subscriber in subscribers:
                 recipients_list.append(subscriber.email)
 
-            send_mail(subject=f'Вышла новая статья из категории {category_id}!',
-                      message=new_post.preview(),
-                      from_email=FROM_EMAIL,
-                      recipient_list=recipients_list)
+
+            html_content = render_to_string('news/post_appointment.html', {
+                'username': request.user,
+                'header': new_post.header,
+                'preview': new_post.preview()
+            })
+
+            msg = EmailMultiAlternatives(subject=new_post.header,
+                                         body=f'Здравствуй, { request.user }. Новая статья в твоём любимом разделе!',
+                                         from_email=FROM_EMAIL,
+                                         to=recipients_list)
+
+            msg.attach_alternative(html_content, 'text/html')
+
+            msg.send()
+
+
+            # send_mail(subject=f'Вышла новая статья из категории {category_id}!',
+            #           message=new_post.preview(),
+            #           from_email=FROM_EMAIL,
+            #           recipient_list=recipients_list)
 
         new_post.save()
 
