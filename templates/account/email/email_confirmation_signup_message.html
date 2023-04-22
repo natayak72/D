@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Привет!</title>
+</head>
+<body>
+    {% load account %}
+    <h1>Привет, {{ user.username }}!</h1>
+    <p>Спасибо за регистрацию! Вот <a href="{{ activate_url }}">ссылка</a> на подтверждение электронной почты.</p>
+
+</body>
+</html>
