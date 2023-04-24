@@ -7,15 +7,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from django.shortcuts import render, redirect
 from django.core.mail import send_mail, EmailMultiAlternatives
 from django.template.loader import render_to_string
+from django.conf import settings
 
-import D.settings
 from .models import Post, Category, User, Author
 from .forms import PostCreateForm
 from .filters import NewsFilter, CategoryFilter
 
 # Create your views here.
-
-FROM_EMAIL = D.settings.DEFAULT_FROM_EMAIL
 
 
 @login_required
@@ -30,7 +28,6 @@ def make_me_author(request):
     return redirect('/news/')
 
 
-
 class NewsDonos(View):
     def get(self, request, *args, **kwargs):
         return render(request, 'news/donos.html')
@@ -42,7 +39,7 @@ class NewsDonos(View):
 
         send_mail(subject=f'Уважаемый {donos_client_name}! Ваш донос от {donos_date}:',
                   message=donos_message,
-                  from_email=FROM_EMAIL,
+                  from_email=settings.DEFAULT_FROM_EMAIL,
                   recipient_list=['yacyna.pavel1@gmail.com'])
 
         return redirect('news_donos')
@@ -114,12 +111,7 @@ class NewsList(ListView):
         except AttributeError:
             categories = []
         context['choosed'] = categories
-        x = 1
         return context
-
-    # def get(self, request, *args, **kwargs):
-    #     print('news get')
-    #     return redirect('news_list')
 
 
 class NewsCreate(PermissionRequiredMixin, ListView):
@@ -146,7 +138,6 @@ class NewsCreate(PermissionRequiredMixin, ListView):
             for subscriber in subscribers:
                 recipients_list.append(subscriber.email)
 
-
             html_content = render_to_string('news/post_appointment.html', {
                 'username': request.user,
                 'header': new_post.header,
@@ -154,14 +145,13 @@ class NewsCreate(PermissionRequiredMixin, ListView):
             })
 
             msg = EmailMultiAlternatives(subject=new_post.header,
-                                         body=f'Здравствуй, { request.user }. Новая статья в твоём любимом разделе!',
-                                         from_email=FROM_EMAIL,
+                                         body=f'Здравствуй, {request.user}. Новая статья в твоём любимом разделе!',
+                                         from_email=settings.DEFAULT_FROM_EMAIL,
                                          to=recipients_list)
 
             msg.attach_alternative(html_content, 'text/html')
 
             msg.send()
-
 
             # send_mail(subject=f'Вышла новая статья из категории {category_id}!',
             #           message=new_post.preview(),
