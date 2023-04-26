@@ -26,10 +26,10 @@ def notify_post_created(instance, **kwargs):
             recipients_list.append(subscriber.email)
 
     # 3. Отправить письма
-    send_mail(subject=subject,
-              message=message,
-              from_email=settings.DEFAULT_FROM_EMAIL,
-              recipient_list=recipients_list)
+    # send_mail(subject=subject,
+    #           message=message,
+    #           from_email=settings.DEFAULT_FROM_EMAIL,
+    #           recipient_list=recipients_list)
 
 
 @receiver(pre_save, sender=Post)

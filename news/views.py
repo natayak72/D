@@ -2,6 +2,7 @@ import datetime
 
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required
+from django.contrib.sites.models import Site
 from django.views.generic import DeleteView, ListView, DetailView, UpdateView, View
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.shortcuts import render, redirect
@@ -141,7 +142,8 @@ class NewsCreate(PermissionRequiredMixin, ListView):
             html_content = render_to_string('news/post_appointment.html', {
                 'username': request.user,
                 'header': new_post.header,
-                'preview': new_post.preview()
+                'preview': new_post.preview(),
+                'url': f'http://{Site.objects.get_current().domain}:8000{new_post.get_absolute_url()}'
             })
 
             msg = EmailMultiAlternatives(subject=new_post.header,
