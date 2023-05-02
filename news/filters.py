@@ -10,3 +10,9 @@ class NewsFilter(FilterSet):
             'header': ['icontains'],
             'author': ['exact']
         }
+
+
+class CategoryFilter(FilterSet):
+    class Meta:
+        model = Post
+        fields = ['category']

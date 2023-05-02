@@ -31,51 +31,52 @@ print('Creating posts...')
 
 ARTICLE_TEXT = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
 POSTS_COUNT = 12
+POSTS_CREATE_DELAY_SEC = 10
 
 article1 = Post.objects.create(author=a1, header='Article header 1', text=ARTICLE_TEXT, type='article')
 print('created post 1 of 12')
 
-time.sleep(30)
+time.sleep(POSTS_CREATE_DELAY_SEC)
 article2 = Post.objects.create(author=a2, header='Article header 2', text=ARTICLE_TEXT, type='article')
 print('created post 2 of 12')
 
-time.sleep(30)
+time.sleep(POSTS_CREATE_DELAY_SEC)
 article3 = Post.objects.create(author=a1, header='News header 1', text=ARTICLE_TEXT, type='news')
 print('created post 3 of 12')
 
-time.sleep(30)
+time.sleep(POSTS_CREATE_DELAY_SEC)
 article4 = Post.objects.create(author=a1, header='News header 2', text=ARTICLE_TEXT, type='news')
 print('created post 4 of 12')
 
-time.sleep(30)
+time.sleep(POSTS_CREATE_DELAY_SEC)
 article5 = Post.objects.create(author=a2, header='Article header 3', text=ARTICLE_TEXT, type='article')
 print('created post 5 of 12')
 
-time.sleep(30)
+time.sleep(POSTS_CREATE_DELAY_SEC)
 article6 = Post.objects.create(author=a1, header='News header 3', text=ARTICLE_TEXT, type='news')
 print('created post 6 of 12')
 
-time.sleep(30)
+time.sleep(POSTS_CREATE_DELAY_SEC)
 article7 = Post.objects.create(author=a2, header='Article header 4', text=ARTICLE_TEXT, type='article')
 print('created post 7 of 12')
 
-time.sleep(30)
+time.sleep(POSTS_CREATE_DELAY_SEC)
 article8 = Post.objects.create(author=a1, header='News header 4', text=ARTICLE_TEXT, type='news')
 print('created post 8 of 12')
 
-time.sleep(30)
+time.sleep(POSTS_CREATE_DELAY_SEC)
 article9 = Post.objects.create(author=a2, header='Article header 5', text=ARTICLE_TEXT, type='article')
 print('created post 9 of 12')
 
-time.sleep(30)
+time.sleep(POSTS_CREATE_DELAY_SEC)
 article10 = Post.objects.create(author=a1, header='News header 5', text=ARTICLE_TEXT, type='news')
 print('created post 10 of 12')
 
-time.sleep(30)
+time.sleep(POSTS_CREATE_DELAY_SEC)
 article11 = Post.objects.create(author=a2, header='Article header 6', text=ARTICLE_TEXT, type='article')
 print('created post 11 of 12')
 
-time.sleep(30)
+time.sleep(POSTS_CREATE_DELAY_SEC)
 article12 = Post.objects.create(author=a2, header='Article header 7', text=ARTICLE_TEXT, type='article')
 print('created post 12 of 12')
 

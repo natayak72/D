@@ -1,7 +1,10 @@
+import datetime
+
 from django.db import models
 from django.contrib.auth.models import User
 
 # Create your models here.
+
 
 class Author(models.Model):
     authorUser = models.OneToOneField(User, on_delete=models.DO_NOTHING, default=1)
@@ -39,6 +42,7 @@ class Author(models.Model):
 
 class Category(models.Model):
     name = models.CharField(unique=True, default='', max_length=255)
+    subscribers = models.ManyToManyField(User)
 
     def __str__(self):
         return self.name
