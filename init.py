@@ -53,32 +53,9 @@ article5 = Post.objects.create(author=a2, header='Article header 3', text=ARTICL
 print('created post 5 of 12')
 
 time.sleep(POSTS_CREATE_DELAY_SEC)
-article6 = Post.objects.create(author=a1, header='News header 3', text=ARTICLE_TEXT, type='news')
+article6 = Post.objects.create(author=a2, header='News header 3', text=ARTICLE_TEXT, type='news')
 print('created post 6 of 12')
 
-time.sleep(POSTS_CREATE_DELAY_SEC)
-article7 = Post.objects.create(author=a2, header='Article header 4', text=ARTICLE_TEXT, type='article')
-print('created post 7 of 12')
-
-time.sleep(POSTS_CREATE_DELAY_SEC)
-article8 = Post.objects.create(author=a1, header='News header 4', text=ARTICLE_TEXT, type='news')
-print('created post 8 of 12')
-
-time.sleep(POSTS_CREATE_DELAY_SEC)
-article9 = Post.objects.create(author=a2, header='Article header 5', text=ARTICLE_TEXT, type='article')
-print('created post 9 of 12')
-
-time.sleep(POSTS_CREATE_DELAY_SEC)
-article10 = Post.objects.create(author=a1, header='News header 5', text=ARTICLE_TEXT, type='news')
-print('created post 10 of 12')
-
-time.sleep(POSTS_CREATE_DELAY_SEC)
-article11 = Post.objects.create(author=a2, header='Article header 6', text=ARTICLE_TEXT, type='article')
-print('created post 11 of 12')
-
-time.sleep(POSTS_CREATE_DELAY_SEC)
-article12 = Post.objects.create(author=a2, header='Article header 7', text=ARTICLE_TEXT, type='article')
-print('created post 12 of 12')
 
 # Присвоить им категории
 # (как минимум в одной статье/новости должно быть не меньше 2 категорий).
