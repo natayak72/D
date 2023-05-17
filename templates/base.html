@@ -1,3 +1,4 @@
+{% load cache %}
 <!DOCTYPE html>
 <html>
     <head>
@@ -8,7 +9,12 @@
             <h1 class="navbar-brand">Задания блока D</h1>
             <h3>Пользователь {{request.user.username}}</h3>
             {% include 'base/login_btns.html' %}
-            {% include 'base/nav.html' %}
+
+            {% cache 60 nav %}
+                {% block nav %}
+                    {% include 'base/nav.html' %}
+                {% endblock nav %}
+            {% endcache %}
 
 {#            --------------------------------------------------  content  #}
             {% block content %}

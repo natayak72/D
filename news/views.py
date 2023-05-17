@@ -29,7 +29,6 @@ def make_me_author(request):
     return redirect('/news/')
 
 
-
 class CategorySubscribe(DetailView):
     model = Category
     template_name = 'news/subscribe_category.html'
