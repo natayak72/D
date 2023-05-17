@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список новых постов</title>
+</head>
+<body>
+    <h2>Привет,{{ username }}!</h2>
+    <p>За последнюю неделю вышли следующие посты в твоих любимых категориях:</p>
+
+
+    <ul>
+        {% for category, posts_per_category in posts.items %}
+            <h3>Категория {{ category }}</h3>
+            <ul>
+            {% for post in posts_per_category %}
+                <li><a href="{{ post.url }}">{{ post.preview }}</a></li>
+            {% endfor %}
+            </ul>
+        {% endfor %}
+    </ul>
+
+
+
+</body>
+</html>
