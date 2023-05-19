@@ -12,8 +12,12 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         category_name_to_delete = options['category']
         for category_name in category_name_to_delete:
-            # self.stdout.write(category_name)
-            for post in Post.objects.filter(category__name__exact=category_name):
-                self.stdout.write(post.preview())
+            self.stdout.readable()
+            self.stdout.write(f'Удалить все новости категории {category_name}? Введите \"yes\", если да.')
+            answer = input()
+
+            if answer == 'yes':
+                for post in Post.objects.filter(category__name__exact=category_name):
+                    post.delete()
 
         return ''
