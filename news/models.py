@@ -2,6 +2,8 @@ import datetime
 
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.cache import cache
+
 
 # Create your models here.
 
@@ -70,6 +72,10 @@ class Post(models.Model):
     def __str__(self):
         return f'{self.header} ({self.create_datetime}): {self.preview()}'
 
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        cache.delete(f'post-{self.pk}')
+
     def like(self):
         self.rating += 1
         self.save()
@@ -85,11 +91,9 @@ class Post(models.Model):
         return f'/news/{self.id}'
 
 
-
 class PostCategory(models.Model):
     post = models.ForeignKey(Post, on_delete=models.DO_NOTHING)
     category = models.ForeignKey(Category, on_delete=models.DO_NOTHING)
-
 
 
 class Comment(models.Model):
@@ -109,4 +113,3 @@ class Comment(models.Model):
     def dislike(self):
         self.rating -= 1
         self.save()
-

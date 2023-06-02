@@ -9,6 +9,7 @@ from django.shortcuts import render, redirect
 from django.core.mail import send_mail, EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.conf import settings
+from django.core.cache import cache
 
 from .models import Post, Category, User, Author
 from .forms import PostCreateForm
@@ -71,6 +72,15 @@ class NewsInstance(DetailView):
     template_name = 'news/item.html'
     context_object_name = 'news'
     queryset = Post.objects.all()
+
+    def get_object(self, *args, **kwargs):
+        obj = cache.get(f'post-{self.kwargs["pk"]}', None)
+
+        if not obj:
+            obj = super().get_object(queryset=self.queryset)
+            cache.set(f'post-{self.kwargs["pk"]}', obj)
+
+        return obj
 
 
 class NewsList(ListView):
