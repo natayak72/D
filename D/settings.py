@@ -15,7 +15,6 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -26,8 +25,6 @@ SECRET_KEY = 'django-insecure-+i*!pzy5%!1keh08^2q4d!em#hb!bj-p04k7x0w2t$dmast($n
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
-
 
 AUTHENTICATION_BACKENDS = [
     # Needed to login by username in Django admin, regardless of `allauth`
@@ -86,7 +83,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'D.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
@@ -96,7 +92,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -116,7 +111,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
@@ -127,7 +121,6 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
@@ -143,7 +136,7 @@ LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/news'
 LOGOUT_REDIRECT_URL = '/news'
 
-DEFAULT_FROM_EMAIL = 'natayak72@yandex.ru'
+DEFAULT_FROM_EMAIL = 'yacyna.pavel@yandex.ru'
 
 SITE_ID = 1
 
@@ -158,16 +151,12 @@ ACCOUNT_AUTHENTICATION_METHOD = 'username'
 
 EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = 465
-
-EMAIL_HOST_USER = 'natayak72'
-EMAIL_HOST_PASSWORD = 'dqkqnaapxglbfyrc'    # Имя пароля - skillfactory
-
+EMAIL_HOST_USER = 'yacyna.pavel'
+EMAIL_HOST_PASSWORD = 'wkwjkejbsqstnqsq'  # Имя пароля - sf
 EMAIL_USE_SSL = True
-
 
 # формат даты, которую будет воспринимать наш задачник
 APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
-
 
 # если задача не выполняется за 25 секунд, то она автоматически снимается, можете поставить время побольше, но как правило, это сильно бьёт по производительности сервера
 APSCHEDULER_RUN_NOW_TIMEOUT = 25  # Seconds
@@ -177,5 +166,106 @@ CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
         'LOCATION': os.path.join(BASE_DIR, 'cache_files')
+    }
+}
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'simple': {
+            'format': '%(asctime)s %(levelname)s %(message)s'
+        },
+        'warning_formatter': {
+            'format': '%(asctime)s %(levelname)s %(pathname)s %(message)s'
+        },
+        'errors_formatter': {
+            'format': '%(asctime)s %(levelname)s %(pathname)s %(exc_info)s %(message)s'
+        },
+        'file_general_formatter': {
+            'format': '%(asctime)s %(levelname)s %(module)s %(message)s'
+        },
+        'file_errors_formatter': {
+            'format': '%(asctime)s %(levelname)s %(message)s %(pathname)s %(exc_info)s'
+        },
+        'email_formatter': {
+            'format': '%(asctime)s %(levelname)s %(message)s %(pathname)s'
+        },
+    },
+    'filters': {
+        'require_debug_true_filter': {
+            '()': 'django.utils.log.RequireDebugTrue'
+        },
+        'require_debug_false_filter': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        }
+    },
+    'handlers': {
+        'console_handler': {
+            'level': 'DEBUG',
+            'filters': ['require_debug_true_filter'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple'
+        },
+        'console_warning_handler': {
+            'level': 'WARNING',
+            'filters': ['require_debug_true_filter'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'warning_formatter'
+        },
+        'console_errors_handler': {
+            'level': 'WARNING',
+            'filters': ['require_debug_true_filter'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'errors_formatter'
+        },
+        "file_general_handler": {
+            "level": "INFO",
+            "class": "logging.FileHandler",
+            'filters': ['require_debug_false_filter'],
+            "filename": f"{os.path.join(BASE_DIR, 'logs')}/general.log",
+            'formatter': 'file_general_formatter'
+        },
+        "file_errors_handler": {
+            "level": "ERROR",
+            "class": "logging.FileHandler",
+            "filename": f"{os.path.join(BASE_DIR, 'logs')}/errors.log",
+            'formatter': 'file_general_formatter'
+        },
+        "file_handler_security": {
+            "level": "ERROR",
+            "class": "logging.FileHandler",
+            "filename": f"{os.path.join(BASE_DIR, 'logs')}/security.log",
+            'formatter': 'file_general_formatter'
+        },
+        "email_handler": {
+            "level": "ERROR",
+            "class": "django.utils.log.AdminEmailHandler",
+            'formatter': 'email_formatter',
+            'filters': ['require_debug_false_filter'],
+        },
+
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console_handler', 'console_warning_handler', 'console_errors_handler',
+                         'file_general_handler'],
+        },
+        'django.request': {
+            'handlers': ['file_security_errors_handler', 'email_handler'],
+        },
+        'django.server': {
+            'handlers': ['file_security_errors_handler', 'email_handler'],
+        },
+        'django.template': {
+            'handlers': ['file_security_errors_handler'],
+        },
+        'django.db_backends': {
+            'handlers': ['file_security_errors_handler'],
+        },
+        'django.security': {
+            'handlers': ['file_handler_security'],
+        }
     }
 }
